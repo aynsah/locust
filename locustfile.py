@@ -9,7 +9,7 @@ from common.checkout_cart import CheckoutCart
 
 class HelloWorldUser(HttpUser):
     wait_time = between(0.1, 2)
-    tasks = {AccessCatalog:2, CheckoutCart:1}
+    tasks = {AccessCatalog:2, Account:1, CheckoutCart:1}
 
     def __init__(self, parent):
         super(HelloWorldUser, self).__init__(parent)
