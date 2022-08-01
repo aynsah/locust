@@ -24,6 +24,7 @@ class CheckoutCart(TaskSet):
                 if response.status_code >= 400: raise Exception("error status code") 
 
                 items = response.json().get("data").get("cart").get("items")
+                if items == None: self.interrupt()
                 if len(items) == 0: self.interrupt()
 
                 self.items = items
@@ -71,11 +72,15 @@ class CheckoutCart(TaskSet):
         with self.client.post(base_url() + "/orders/checkout/test", json=body, headers=headers, name="checkout") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
+
                 SharedData.cart_token = ""
+                if SharedData.user_id != 0:
+                    self.reset_cart()
 
                 print("success checkout")
                     
             except Exception as e:
+                print(body)
                 log(response.status_code, response.url, e, response.text)
 
         print("finish checkout")
@@ -98,6 +103,19 @@ class CheckoutCart(TaskSet):
                 log(response.status_code, response.url, e, response.text)
 
         return promo_code
+
+    def reset_cart(self):
+        headers = {"Authorization": SharedData.token}
+        body = { "items": [] }
+
+        with self.client.post(base_url() + "/cart/create", json=body, headers=headers, name="reset-cart") as response:
+            try:
+                if response.status_code >= 400: raise Exception("error status code") 
+
+                SharedData.cart_token = response.json().get("data").get("cart").get("cart_token")
+                    
+            except Exception as e:
+                log(response.status_code, response.url, e, response.text)
 
     @staticmethod
     def generate_random_phone():

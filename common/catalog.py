@@ -77,8 +77,13 @@ class AccessCatalog(TaskSet):
                     variants = product.get("variant")
                     random_variant = random.randint(-1, len(variants) - 1)
                     variant_id = 0 if random_variant == -1 else variants[random_variant]["id"]
-                    
-                    self.add_cart(product["id"], variant_id, "product", random.randint(1, stock), self.random_notes(), [])
+
+                    if variant_id != 0:
+                        stock = variants[random_variant]["total_qty"]
+                    if stock > 0: 
+                        max_quantity = min(5, stock)
+
+                        self.add_cart(product["id"], variant_id, "product", random.randint(1, max_quantity), self.random_notes(), [])
                     
             except Exception as e:
                 log(response.status_code, response.url, e, response.text)
