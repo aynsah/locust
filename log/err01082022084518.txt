@@ -1,0 +1,36 @@
+=====================
+406 => https://olseratokoonline.indociti.com/id/allinolsera2/orders/checkout/test
+Exception('error status code')
+{"error":{"error_code":406,"message":"Produk Long John Nutella hanya tersisa 935","status_code":406}}
+=====================
+
+=====================
+406 => https://olseratokoonline.indociti.com/id/allinolsera2/orders/checkout/test
+Exception('error status code')
+{"error":{"error_code":406,"message":"Produk Long John Nutella hanya tersisa 935","status_code":406}}
+=====================
+
+=====================
+406 => https://olseratokoonline.indociti.com/id/allinolsera2/orders/checkout/test
+Exception('error status code')
+{"error":{"error_code":406,"message":"Produk Long John Nutella hanya tersisa 935","status_code":406}}
+=====================
+
+=====================
+406 => https://olseratokoonline.indociti.com/id/allinolsera2/catalog/combo/show/40880
+Exception('error status code')
+{"error":{"error_code":7,"message":"OOpps, data Product Combo tidak di temukan","status_code":406}}
+=====================
+
+=====================
+406 => https://olseratokoonline.indociti.com/id/allinolsera2/orders/checkout/test
+Exception('error status code')
+{"error":{"error_code":406,"message":"Produk Long John Nutella hanya tersisa 935","status_code":406}}
+=====================
+
+=====================
+406 => https://olseratokoonline.indociti.com/id/allinolsera2/orders/checkout/test
+Exception('error status code')
+{"error":{"error_code":406,"message":"Produk Long John Nutella hanya tersisa 935","status_code":406}}
+=====================
+
