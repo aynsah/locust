@@ -1,5 +1,5 @@
 from locust import TaskSet, constant, task, between, constant
-from utils.config import SharedData, base_url
+from utils.config import SharedData, base_url, headers
 from utils.err import log
 
 class Account(TaskSet):
@@ -10,13 +10,12 @@ class Account(TaskSet):
         print("start profile")
         if SharedData.user_id == 0:
             body = SharedData.users[0]
-            headers = {"Authorization": SharedData.token}
 
             merge_cart = ""
             if SharedData.cart_token != "":
                 merge_cart = "?merge_cart=" + SharedData.cart_token
             
-            with self.client.post(base_url() + "/account/do/sign-in" + merge_cart, json=body, headers=headers, name="login-user") as response:
+            with self.client.post(base_url() + "/account/do/sign-in" + merge_cart, json=body, headers=headers(), name="login-user") as response:
                 try:
                     if response.status_code >= 400:  raise Exception("error status code")
 
@@ -29,9 +28,7 @@ class Account(TaskSet):
 
     @task(1)
     def info(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/profile/info", headers=headers, name="user-info") as response:
+        with self.client.get(base_url() + "/profile/info", headers=headers(), name="user-info") as response:
             try:
                 if response.status_code >= 400:  raise Exception("error status code")
 
@@ -40,9 +37,7 @@ class Account(TaskSet):
 
     @task(1)
     def loyalty_point(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/profile/loyalty-points", headers=headers, name="user-loyalty-point") as response:
+        with self.client.get(base_url() + "/profile/loyalty-points", headers=headers(), name="user-loyalty-point") as response:
             try:
                 if response.status_code >= 400:  raise Exception("error status code")
 
@@ -51,9 +46,7 @@ class Account(TaskSet):
          
     @task(1)
     def my_reviews(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/profile/reviews", headers=headers, name="user-reviews") as response:
+        with self.client.get(base_url() + "/profile/reviews", headers=headers(), name="user-reviews") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code")
 
@@ -62,9 +55,7 @@ class Account(TaskSet):
 
     @task(2)
     def reviewable_items(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/profile/reviews/reviewable-items", headers=headers, name="user-reviewable-items") as response:
+        with self.client.get(base_url() + "/profile/reviews/reviewable-items", headers=headers(), name="user-reviewable-items") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code")
 

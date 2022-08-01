@@ -3,7 +3,7 @@ import random
 from locust import TaskSet, task, between, constant
 from common.location import Location
 
-from utils.config import SharedData, base_url
+from utils.config import SharedData, base_url, headers
 from utils.err import log
 
 class CheckoutCart(TaskSet):
@@ -17,9 +17,7 @@ class CheckoutCart(TaskSet):
         print("start checkout")
         if SharedData.cart_token == "": self.interrupt()
 
-        headers = {"Authorization": SharedData.token}
-
-        with self.client.get(base_url() + "/cart/list/" + SharedData.cart_token, headers=headers, name="list-cart") as response:
+        with self.client.get(base_url() + "/cart/list/" + SharedData.cart_token, headers=headers(), name="list-cart") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
 
@@ -37,9 +35,8 @@ class CheckoutCart(TaskSet):
     def set_promo_code(self):
         self.code = self.get_promo_code()
         body = {"promo_code": self.code}
-        headers = {"Authorization": SharedData.token}
 
-        with self.client.put(base_url() + "/cart/update/" + SharedData.cart_token, json=body, headers=headers, name="promo-code-update") as response:
+        with self.client.put(base_url() + "/cart/update/" + SharedData.cart_token, json=body, headers=headers(), name="promo-code-update") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
                     
@@ -48,7 +45,6 @@ class CheckoutCart(TaskSet):
 
     @task
     def checkout(self):
-        headers = {"Authorization": SharedData.token}
         body = {
             "items": self.items,
             "payment_mode_id": 1,
@@ -69,7 +65,7 @@ class CheckoutCart(TaskSet):
             }
             body["profile"] = profile
 
-        with self.client.post(base_url() + "/orders/checkout/test", json=body, headers=headers, name="checkout") as response:
+        with self.client.post(base_url() + "/orders/checkout/test", json=body, headers=headers(), name="checkout") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
 
@@ -88,8 +84,7 @@ class CheckoutCart(TaskSet):
 
     def get_promo_code(self):
         promo_code = ""
-        headers = {"Authorization": SharedData.token}
-        with self.client.get(base_url() + "/profile/promotion-codes/?data_testing=true&per_page=-1&search_column=code&search_text=&search_condition=!=", headers=headers, name="promo-code-list") as response:
+        with self.client.get(base_url() + "/profile/promotion-codes/?data_testing=true&per_page=-1&search_column=code&search_text=&search_condition=!=", headers=headers(), name="promo-code-list") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
 
@@ -105,10 +100,9 @@ class CheckoutCart(TaskSet):
         return promo_code
 
     def reset_cart(self):
-        headers = {"Authorization": SharedData.token}
         body = { "items": [] }
 
-        with self.client.post(base_url() + "/cart/create", json=body, headers=headers, name="reset-cart") as response:
+        with self.client.post(base_url() + "/cart/create", json=body, headers=headers(), name="reset-cart") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
 

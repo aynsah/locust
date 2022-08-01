@@ -13,3 +13,6 @@ class SharedData(object):
 
 def base_url():
     return "/" + SharedData.lang + "/" + SharedData.domain
+
+def headers():
+    return {"Authorization": SharedData.token}

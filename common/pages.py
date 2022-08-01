@@ -1,5 +1,5 @@
 from locust import TaskSet, constant, task, between, constant
-from utils.config import SharedData, base_url
+from utils.config import SharedData, base_url, headers
 from utils.err import log
 import random
 
@@ -12,9 +12,7 @@ class Pages(TaskSet):
 
     @task(1)
     def faq(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/faq", headers=headers, name="page-faq") as response:
+        with self.client.get(base_url() + "/faq", headers=headers(), name="page-faq") as response:
             try:
                 if response.status_code >= 400:  raise Exception("error status code")
 
@@ -23,9 +21,7 @@ class Pages(TaskSet):
 
     @task(1)
     def about_us(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/about-us", headers=headers, name="page-about-us") as response:
+        with self.client.get(base_url() + "/about-us", headers=headers(), name="page-about-us") as response:
             try:
                 if response.status_code >= 400:  raise Exception("error status code")
 
@@ -34,9 +30,7 @@ class Pages(TaskSet):
          
     @task(1)
     def terms(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/terms-and-policy", headers=headers, name="page-terms-and-policy") as response:
+        with self.client.get(base_url() + "/terms-and-policy", headers=headers(), name="page-terms-and-policy") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code")
 
@@ -45,9 +39,7 @@ class Pages(TaskSet):
 
     @task(1)
     def testimonials(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/testimonial/lists", headers=headers, name="page-testimonials") as response:
+        with self.client.get(base_url() + "/testimonial/lists", headers=headers(), name="page-testimonials") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code")
 
@@ -56,9 +48,7 @@ class Pages(TaskSet):
 
     @task(1)
     def articles(self):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/article/lists", headers=headers, name="page-articles") as response:
+        with self.client.get(base_url() + "/article/lists", headers=headers(), name="page-articles") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code")
 
@@ -71,9 +61,7 @@ class Pages(TaskSet):
                 log(response.status_code, response.url, e, response.text)
 
     def show_article(self, article_id):
-        headers = {"Authorization": SharedData.token}
-        
-        with self.client.get(base_url() + "/article/show/" + str(article_id), headers=headers, name="page-article-show") as response:
+        with self.client.get(base_url() + "/article/show/" + str(article_id), headers=headers(), name="page-article-show") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code")
 

@@ -1,8 +1,9 @@
 from locust import HttpUser, task, between
 from datetime import datetime
+from common.beli_langsung import BeliLangsung
 from common.pages import Pages
 
-from utils.config import SharedData, base_url
+from utils.config import SharedData, base_url, headers
 from utils.err import log
 from common.catalog import AccessCatalog
 from common.account import Account
@@ -10,7 +11,7 @@ from common.checkout_cart import CheckoutCart
 
 class HelloWorldUser(HttpUser):
     wait_time = between(0.1, 2)
-    tasks = {AccessCatalog:4, Account:2, CheckoutCart:2, Pages:1}
+    tasks = {AccessCatalog:4, Account:2, CheckoutCart:2, Pages:1, BeliLangsung:2}
 
     def __init__(self, parent):
         super(HelloWorldUser, self).__init__(parent)
@@ -28,8 +29,7 @@ class HelloWorldUser(HttpUser):
             except Exception as e:
                 log(response.status_code, response.url, e, response.text)
 
-        headers = {"Authorization": SharedData.token}
-        with self.client.get(base_url() + "/store/data", headers=headers, name="get-store-data") as response:
+        with self.client.get(base_url() + "/store/data", headers=headers(), name="get-store-data") as response:
             try:
                 if response.status_code >= 400: raise Exception("error status code") 
 
