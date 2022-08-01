@@ -72,7 +72,7 @@ class AccessCatalog(TaskSet):
                 stock = product["total_qty"]
 
                 # perbandingan user ingin memasukan kedalam cart
-                if random.randint(1, 8) == 1 and stock < 1:
+                if random.randint(1, 8) == 1 and stock > 0:
                     # -1 == tanpa variant
                     variants = product.get("variant")
                     random_variant = random.randint(-1, len(variants) - 1)

@@ -76,7 +76,6 @@ class CheckoutCart(TaskSet):
                 print("success checkout")
                     
             except Exception as e:
-                print(body)
                 log(response.status_code, response.url, e, response.text)
 
         print("finish checkout")

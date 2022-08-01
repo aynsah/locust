@@ -1,5 +1,6 @@
 from locust import HttpUser, task, between
 from datetime import datetime
+from common.pages import Pages
 
 from utils.config import SharedData, base_url
 from utils.err import log
@@ -9,7 +10,7 @@ from common.checkout_cart import CheckoutCart
 
 class HelloWorldUser(HttpUser):
     wait_time = between(0.1, 2)
-    tasks = {AccessCatalog:2, Account:1, CheckoutCart:1}
+    tasks = {AccessCatalog:4, Account:2, CheckoutCart:2, Pages:1}
 
     def __init__(self, parent):
         super(HelloWorldUser, self).__init__(parent)
